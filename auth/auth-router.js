@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 //Database linking
 const Users = require("../database/auth-model");
+//Linking secrets
+const secrets = require("../config/secrets");
 
 router.post("/register", (req, res) => {
   // implement registration
@@ -23,5 +25,17 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   // implement login
 });
+
+function generateToken(user) {
+  const payload = {
+    username: user.username
+  };
+  const secret = secrets.jwtSecret;
+
+  const options = {
+    expiresIn: "1d"
+  };
+  return jwt.sign(payload, secret, options);
+}
 
 module.exports = router;
